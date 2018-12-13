@@ -1,0 +1,7 @@
+REGION Ellipsoid       MATERIAL Vacuum
+REGION Exterior        MATERIAL FILE_Silver.txt
+
+SURFACE Plate
+    MESHFILE Ellipsoid.msh
+    REGIONS Exterior Ellipsoid
+ENDSURFACE
