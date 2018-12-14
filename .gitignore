@@ -39,7 +39,6 @@
 
 # scuff output file
 *.log
-EPFile
 coeff.txt
 OmegaValues.dat
 *.msh
@@ -65,4 +64,7 @@ lib/
 # Latex generated files
 *.aux
 *.synctex.gz
+
+# output file
+results.txt
 

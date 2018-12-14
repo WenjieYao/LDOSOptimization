@@ -36,8 +36,8 @@ double SphericalHarmonics::radius(double t, double p) const {
     double r = 0;
     double temp_r = 0;
     for (unsigned i=1; i<N; ++i)
-        temp_r += c[i] * Ylm(l[i], m[i], t, p);
-    r = c[0] * Ylm(l[0], m[0], t, p) + temp_r*temp_r;
+        temp_r += c[i] * Ylm(l[i-1], m[i-1], t, p);
+    r = c[0] + temp_r*temp_r;
     return r;
 }
 

@@ -142,6 +142,7 @@ HMatrix *scuff_scatter(char *GeoFile, char *OmegaFile, double *psLoc, int npsLoc
   /*******************************************************************/
   HMatrix **TBlocks=0, **UBlocks=0;
   int NS=G->NumSurfaces;
+  /*
   if (NumTransformations>1)
    { int NADB = NS*(NS-1)/2; // number of above-diagonal blocks
      TBlocks  = (HMatrix **)mallocEC(NS*sizeof(HMatrix *));
@@ -163,7 +164,7 @@ HMatrix *scuff_scatter(char *GeoFile, char *OmegaFile, double *psLoc, int npsLoc
          };
       };
    };
-
+  */
   /*******************************************************************/
   /* loop over frequencies *******************************************/
   /*******************************************************************/
@@ -273,6 +274,7 @@ HMatrix *scuff_scatter(char *GeoFile, char *OmegaFile, double *psLoc, int npsLoc
            HMatrix *XMatrix=new HMatrix(EPFile,1,"-ncol 3");
            HMatrix *SFMatrix = G->GetFields( 0, KN, Omega, kBloch, XMatrix); // scattered
            SFMatrix->GetEntries(0,":",EH);
+           delete SFMatrix;
            delete XMatrix;
          }; // for(int nIF=0; nIF<IFList->NumIFs; nIF++
       
@@ -284,7 +286,14 @@ HMatrix *scuff_scatter(char *GeoFile, char *OmegaFile, double *psLoc, int npsLoc
       }; // for(int nt=0; nt<NumTransformations; nt++)
 
    }; //  for(nFreq=0; nFreq<NumFreqs; nFreqs++)
+  delete IF;
+  delete IFList;
   delete G;
+  //delete SSD;
+  delete M;
+  delete RHS;
+  delete KN;
+  delete kBloch;
   //printf("Thank you for your support.\n");
   return PSDMatrix; 
 }

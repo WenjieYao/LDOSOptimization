@@ -142,19 +142,19 @@ Y_l^m(\theta,\phi) =\left\{\begin{array}{ll}
 
 The basis function set contains various combinations of $(l,m)$, we number them by $n=l(l+1)+m+1$, then an arbitrary shape function $x(\theta,\phi)$ can be expressed as 
 \begin{equation}
-x(\theta,\phi) = \sum_{n=1}^N c_nY_n(\theta,\phi)\label{sh}
+x(\theta,\phi) = c_0 + |\sum_{n=1}^N c_nY_n(\theta,\phi)|^2\label{sh}
 \end{equation}
-where $c_n$ is the expansion coefficients and the parameters that we need to optimize.
+where $c_0=d_{min}$ is the minimum distance and $c_n$ is the expansion coefficients and the parameters that we need to optimize.
 
 In numerical evaluation, we do the surface integral by summing up all panels with each panel $\delta A_p(\theta,\phi)$. Inserting Eq. \eqref{sh} to Eq. \eqref{fderiv} we get
 
 \begin{equation}
-\delta \rho_e =  \frac{\epsilon_0}{\pi\omega}Im\sum_{j,n,p} \delta c_nY_n(\theta,\phi) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\theta,\phi).\label{sdelta}
+\delta \rho_e =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,n,p} \delta c_n\sqrt{x-c_0}Y_n(\theta,\phi) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\theta,\phi).\label{sdelta}
 \end{equation}
 
 Since $(\theta,\phi)$ is determined by $\mathbf{x}^\prime$, the derivate to one coefficient $c_n$ is then
 \begin{equation}
-\frac{\partial \rho_e}{\partial c_n} =  \frac{\epsilon_0}{\pi\omega}Im\sum_{j,p}Y_n(\mathbf{x}^\prime) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\mathbf{x}^\prime).\label{sderiv}
+\frac{\partial \rho_e}{\partial c_n} =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,p}\sqrt{x-c_0}Y_n(\mathbf{x}^\prime) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\mathbf{x}^\prime).\label{sderiv}
 \end{equation}
 %\begin{figure}[H]
 %\centering
