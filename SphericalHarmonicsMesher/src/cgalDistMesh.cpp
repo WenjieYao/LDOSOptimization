@@ -127,7 +127,7 @@ void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_out
     unsigned maxRetry = 20;
     unsigned cnt = 0;
     while(cnt++ < maxRetry) {
-        //std::cout << "maxEdgeLength: " << mi_copy.maxEdgeLength << std::endl;
+        std::cout << "maxEdgeLength: " << mi_copy.maxEdgeLength << std::endl;
         cgalDistMesh_single(dist_function, bound, &mi_copy, mo);
         if ((mo->numPanels > mi->maxNumPanels) || (mo->numPanels < mi->minNumPanels))
             mi_copy.maxEdgeLength *= sqrt(mo->numPanels / avgNumPanels);

@@ -1,0 +1,11 @@
+rm coeff.txt
+rm Ellipsoid.msh
+cd ..
+rm SphericalHarmonicsOptimization/SHMesher
+cd SphericalHarmonicsMesher
+echo "0.1 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 2.0 " >> coeff.txt
+./bin/SHMesher coeff.txt 10 0.02 Ellipsoid.msh 500 5000
+cd ..
+cp SphericalHarmonicsMesher/bin/SHMesher SphericalHarmonicsOptimization
+cd SphericalHarmonicsMesher
+gmshgui Ellipsoid.msh

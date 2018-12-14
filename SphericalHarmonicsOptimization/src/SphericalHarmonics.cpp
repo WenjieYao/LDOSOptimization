@@ -34,8 +34,10 @@ SphericalHarmonics::~SphericalHarmonics() {
 // note: may want to convert this to a vector matrix multiply
 double SphericalHarmonics::radius(double t, double p) const {
     double r = 0;
-    for (unsigned i=0; i<N; ++i)
-        r += c[i] * Ylm(l[i], m[i], t, p);
+    double temp_r = 0;
+    for (unsigned i=1; i<N; ++i)
+        temp_r += c[i] * Ylm(l[i], m[i], t, p);
+    r = c[0] * Ylm(l[0], m[0], t, p) + temp_r*temp_r;
     return r;
 }
 
@@ -204,9 +206,9 @@ void SphericalHarmonics::constraint_function(double *cval_iter, double *grad_ite
 // Below: static methods to compute spherical harmonic basis functions
 double SphericalHarmonics::Ylm(unsigned l, int m, double t, double p) {
     if (m<=0)
-        return boost::math::spherical_harmonic_r(l, m, t, p)*boost::math::spherical_harmonic_r(l, m, t, p);
+        return boost::math::spherical_harmonic_r(l, m, t, p);
     else
-        return boost::math::spherical_harmonic_i(l, m, t, p)*boost::math::spherical_harmonic_i(l, m, t, p);
+        return boost::math::spherical_harmonic_i(l, m, t, p);
 }
 
 double SphericalHarmonics::dYdPhi(unsigned l, int m, double t, double p) {
