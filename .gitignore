@@ -66,5 +66,5 @@ lib/
 *.synctex.gz
 
 # output file
-results.txt
+*results.txt
 

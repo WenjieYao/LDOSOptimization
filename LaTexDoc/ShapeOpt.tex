@@ -72,29 +72,35 @@ Therefore, we can get the LDOS of a specified by three scattering simulation. %T
 
 In Owen's thesis, we have that for a shape deformation $\delta x_n(\mathbf{x}^\prime)$, the variation for the object function $F$ is (Eq. (5.28) in Ref. \cite{thesis}). 
 \begin{equation}
-\delta F = 2Re\int \delta x_n(\mathbf{x}^\prime) [(\epsilon_2 -\epsilon_1) \mathbf{E}_{\parallel}(\mathbf{x}^\prime)\cdot\mathbf{E}^\mathbf{A}_{\parallel}(\mathbf{x}^\prime) + (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})\mathbf{D}_{\perp}(\mathbf{x}^\prime)\cdot\mathbf{D}^\mathbf{A}_{\perp}(\mathbf{x}^\prime)]dA
+\delta F = 2Re\int \delta x_n(\mathbf{x}^\prime) [(\epsilon_2 -\epsilon_1) \mathbf{E}_{\parallel}(\mathbf{x}^\prime)\cdot\mathbf{E}^\mathbf{A}_{\parallel}(\mathbf{x}^\prime) + (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})\mathbf{D}_{\perp}(\mathbf{x}^\prime)\cdot\mathbf{D}^\mathbf{A}_{\perp}(\mathbf{x}^\prime)]dA\label{dF}
 \end{equation}
-However, this equation is wrong because it assumed that $\partial F/\partial \mathbf{E}$ is the complex conjugate of $\partial F/\partial \mathbf{\bar{E}}$. In fact,
-\begin{equation}
-\overline{(\frac{F}{\partial \mathbf{E}})}=\frac{\partial \bar{F}}{\partial\bar{\mathbf{E}}} \neq \frac{\partial F}{\partial \mathbf{\bar{E}}}
-\end{equation}
+%However, this equation is wrong because it assumed that $\partial F/\partial \mathbf{E}$ is the complex conjugate of $\partial F/\partial \mathbf{\bar{E}}$. In fact,
+%\begin{equation}
+%\overline{(\frac{F}{\partial \mathbf{E}})}=\frac{\partial \bar{F}}{\partial\bar{\mathbf{E}}} \neq \frac{\partial F}{\partial \mathbf{\bar{E}}}
+%\end{equation}
+%
+%Therefore, the right variation for the object function should be
+%\begin{equation}
+%\delta F = \int \delta x_n(\mathbf{x}^\prime) [(\epsilon_2 -\epsilon_1) \mathbf{E}_{\parallel}(\mathbf{x}^\prime)\cdot\mathbf{E}^\mathbf{A}_{\parallel}(\mathbf{x}^\prime) + (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})\mathbf{D}_{\perp}(\mathbf{x}^\prime)\cdot\mathbf{D}^\mathbf{A}_{\perp}(\mathbf{x}^\prime)]dA + \text{Conjugate Adjoint}.
+%\end{equation}
 
-Therefore, the right variation for the object function should be
+Since the electric LDOS $\rho_e$ is the imaginary part of some function, say $\tilde{\rho_e}$:
 \begin{equation}
-\delta F = \int \delta x_n(\mathbf{x}^\prime) [(\epsilon_2 -\epsilon_1) \mathbf{E}_{\parallel}(\mathbf{x}^\prime)\cdot\mathbf{E}^\mathbf{A}_{\parallel}(\mathbf{x}^\prime) + (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})\mathbf{D}_{\perp}(\mathbf{x}^\prime)\cdot\mathbf{D}^\mathbf{A}_{\perp}(\mathbf{x}^\prime)]dA + \text{Conjugate Adjoint}.
+\rho_e = \frac{\tilde{\rho_e}-\tilde{\rho_e}^*}{2i}=Im(\tilde{\rho_e}) = Im[\frac{\epsilon_0}{\pi\omega}\sum_j\hat{\mathbf{s}_j}\cdot \mathbf{E}_{s_j}(\mathbf{x}_0)]
 \end{equation}
+%The optimum of $\tilde{\rho_e}$ must also be the optimum of $\rho_e$. So we can first take the object function to be $\tilde{\rho_e}$, 
+For each direction $j$ in Eq. \eqref{rhoe}, the source of the adjoint field is a electric dipole at $\mathbf{x}_0$ with the amplitude 
 
-Since the electric LDOS $\rho_e$ is the imaginary part of some function, say $\tilde{\rho_e}$. The optimum of $\tilde{\rho_e}$ must also be the optimum of $\rho_e$. So we can first take the object function to be $\tilde{\rho_e}$, for each direction $j$ in Eq. \eqref{rhoe}, the source of the adjoint field is a electric dipole at $\mathbf{x}_0$ with the amplitude 
 \begin{equation}
-\frac{\partial \tilde{\rho_e}}{\partial \mathbf{E}_{s_j}} = \frac{\epsilon_0}{\pi\omega}\int dx^3\delta(\mathbf{x}-\mathbf{x}_0)\hat{\mathbf{s}_j}
+\frac{\partial \rho_e}{\partial \mathbf{E}_{s_j}}=\frac{\partial \rho_e}{\partial \tilde{\rho_e}}\frac{\partial \tilde{\rho_e}}{\partial \mathbf{E}_{s_j}} = \frac{\epsilon_0}{2i\pi\omega}\delta(\mathbf{x}-\mathbf{x}_0)\hat{\mathbf{s}_j}
 \end{equation}
 while the conjugate adjoint field part $\frac{\partial \tilde{\rho_e}}{\partial \mathbf{\bar{E}}_{s_j}} =0$.
 
 This is a also a dipole at $\mathbf{x}=\mathbf{x}_0$ in the $\hat{\mathbf{s}_j}$ direction, so the adjoint field is the same as the original field up to a constant scalar:
 \begin{equation}
-\mathbf{E}^\mathbf{A}_{s_j}(\mathbf{x}) = \frac{\epsilon_0}{\pi\omega}\mathbf{E}_{sj}
+\mathbf{E}^\mathbf{A}_{s_j}(\mathbf{x}) = \frac{\epsilon_0}{2i\pi\omega}\mathbf{E}_{sj}\label{adf}
 \end{equation}
-Therefore, we have the variation for the electric LDOS as
+Inserting Eq. \eqref{adf} to Eq. \eqref{dF}, we then have the variation for the electric LDOS as
 \begin{equation}
 \delta \rho_e =  \frac{\epsilon_0}{\pi\omega}Im\sum_j\int \delta x_n(\mathbf{x}^\prime) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}dA\label{fderiv}
 \end{equation}
@@ -149,13 +155,45 @@ where $c_0=d_{min}$ is the minimum distance and $c_n$ is the expansion coefficie
 In numerical evaluation, we do the surface integral by summing up all panels with each panel $\delta A_p(\theta,\phi)$. Inserting Eq. \eqref{sh} to Eq. \eqref{fderiv} we get
 
 \begin{equation}
-\delta \rho_e =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,n,p} \delta c_n\sqrt{x-c_0}Y_n(\theta,\phi) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\theta,\phi).\label{sdelta}
+\delta \rho_e =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,n,p} \delta c_n\sqrt{x^\prime-c_0}Y_n(\theta,\phi) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\theta,\phi).\label{sdelta}
 \end{equation}
 
 Since $(\theta,\phi)$ is determined by $\mathbf{x}^\prime$, the derivate to one coefficient $c_n$ is then
 \begin{equation}
-\frac{\partial \rho_e}{\partial c_n} =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,p}\sqrt{x-c_0}Y_n(\mathbf{x}^\prime) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\mathbf{x}^\prime).\label{sderiv}
+\frac{\partial \rho_e}{\partial c_n} =  \frac{2\epsilon_0}{\pi\omega}Im\sum_{j,p}\sqrt{x^\prime-c_0}Y_n(\mathbf{x}^\prime) \{(\epsilon_2 -\epsilon_1) [\mathbf{E}_{s_j\parallel}(\mathbf{x}^\prime)]^2+ (\frac{1}{\epsilon_1}-\frac{1}{\epsilon_2})[\mathbf{D}_{s_j\perp}(\mathbf{x}^\prime)]^2\}\delta A_p(\mathbf{x}^\prime).\label{sderiv}
 \end{equation}
+
+Regarding this gradient, there are several problems:
+\begin{itemize}
+\item We need to start with a good initial guess. If the initial guess lies far away from the peak, all gradients are very small, the iteration either stop or move only a little with the change of the LDOS is even smaller than the numerical errors. So far we only know the resonance of a metallic sphere void, the initial guess we implement should related to the sphere shape. 
+\item We can't start with a sphere with minimum distance $c_0=d_{min}$, this will cause all gradients equal to 0 since $x^\prime=c_0$ at the first iteration. To resolve this problem, if we still want to start with a sphere, we need to set the initial radius of the sphere to be $r=c_0+\frac{c_1^2}{4\pi}$ for some none zero $c_1$ (note that $Y_1^2=\frac{1}{4\pi}$).
+\item When the initial guess is a sphere close to the resonance, we notice that the derivative $\partial \rho_e/\partial c_1$ is much larger than all other derivatives (approximately $10^5$ times larger). This means the optimal structure near a sphere is just a sphere, and we can't find another structure since it will converge to the local maximum. 
+\item To avoid the problem above, we need a initial guess other than the sphere. One possible shape is the combination of two resonant sphere, similar to the structure below.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\linewidth]{TwoSphere.png}
+\end{figure}
+However, the problem now is how to make the mesh such that the resolution around the neck is much finer than else where.
+\end{itemize}
+
+\section{Limits to LDOS}
+In Owen's paper \cite{main}, the limits to the LDOS is 
+\begin{equation}
+\frac{\rho_{tot}}{\rho_0} \leq \frac{2\pi}{k^3}\sum_j\int_V\tilde{F}_{inc,s_j}\cdot\overline{\overline{\chi}}^\dagger(\mathrm{Im}\overline{\overline{\chi}})^{-1}\overline{\overline{\chi}} \tilde{F}_{inc,s_j}^*d^3x
+\end{equation}
+
+For metals, the limits can be simplified with the optimal incident field $F_{inc,s_j}=\overline{\overline{G^{EP}}}\hat{\mathbf{s}}_j$:
+\begin{eqnarray}
+\frac{\rho_{tot}}{\rho_0} &\leq& \frac{2\pi}{k^3}\frac{|\chi(\omega)|^2}{\mathrm{Im}\chi(\omega)}\int_V||\overline{\overline{G^{EP}}}||^2_Fd^3x\\
+&=& \frac{k^3}{4\pi}\frac{|\chi(\omega)|^2}{\mathrm{Im}\chi(\omega)}\int_V[\frac{3}{(kr)^6}+\frac{1}{(kr)^4}+\frac{1}{(kr)^2}]d^3x
+\end{eqnarray}
+
+For a enclosure of minimum separation distance $d$, we have
+\begin{equation}
+\frac{\rho_{tot}}{\rho_0} \leq \frac{|\chi(\omega)|^2}{\mathrm{Im}\chi(\omega)}[\frac{1}{(kd)^3}+\frac{1}{kd}+O(kL)]
+\end{equation}
+
+As discussed in Owen's paper, the $O(kL)$ term represents the largest interaction distances over which polarization currents contribute to the LDOS. For small $d$, we can neglect this term since $\frac{1}{(kd)^3}$ is the dominant term and is much larger than other terms. However, for $kd\leq 1$ (for example, $d=200$ nm), the first two terms are smaller than 1, now the problem is what is the approximate value for $O(kL)$? If it is in the order of 1, then the bound should approximately double, which is not really we want to see. Therefore we might need to stick with the small $d$ case?
 %\begin{figure}[H]
 %\centering
 %\includegraphics[width=0.45\linewidth]{SV550.png}

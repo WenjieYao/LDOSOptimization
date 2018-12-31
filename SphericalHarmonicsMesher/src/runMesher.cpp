@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
     int min_tri = (argc==7) ? atoi(argv[5]) : 50;
     int max_tri = (argc==7) ? atoi(argv[6]) : 20000;
-    mesh_inputs mi = {min_tri, max_tri, 1, maxEdgeLength, true, offFile, gmshFile};
+    mesh_inputs mi = {min_tri, max_tri, 0, maxEdgeLength, true, offFile, gmshFile};
     mesh_outputs mo;
 
     bg = new geometry::SphericalHarmonics(num_coeffs, coeffs, -1e6, 1e6);

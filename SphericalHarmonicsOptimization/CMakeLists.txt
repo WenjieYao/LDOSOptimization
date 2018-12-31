@@ -41,5 +41,6 @@ if ( NOT NLopt_FOUND)
 endif()
 
 # Creating entries for target: SHOpt
-add_executable( SHOpt  ${SRC_DIRECTORY}/main.cpp ${SRC_DIRECTORY}/scuff-scatter.cpp ${SRC_DIRECTORY}/LDOSmath.cpp)
+#add_executable( SHOpt  ${SRC_DIRECTORY}/main.cpp ${SRC_DIRECTORY}/scuff-scatter.cpp ${SRC_DIRECTORY}/LDOSmath.cpp)
+add_executable( SHOpt  ${SRC_DIRECTORY}/emain.cpp ${SRC_DIRECTORY}/scuff-scatter.cpp ${SRC_DIRECTORY}/LDOSmath.cpp)
 target_link_libraries( SHOpt scuff basisfunctions ${BOOST_LIBRARIES} Eigen3::Eigen ${NLOPT_LIBRARIES})

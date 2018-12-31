@@ -1,0 +1,9 @@
+rm Ellipsoid.msh
+cd ..
+rm SphericalHarmonicsOptimization/GeoMesher
+cd GeoMesher
+./bin/GeoMesher ellipsoid 1 2 1 0.05 0 200 5000
+cd ..
+cp GeoMesher/bin/GeoMesher SphericalHarmonicsOptimization
+cd GeoMesher
+gmshgui Ellipsoid.msh
