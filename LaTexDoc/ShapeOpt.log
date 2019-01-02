@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  18 DEC 2018 17:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  2 JAN 2019 13:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -469,29 +469,39 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 108.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) [2]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 168.
+Overfull \hbox (40.97293pt too wide) detected at line 163
+\OML/ztmcm/m/it/12 ^^N^^Z[] \OT1/ztmcm/m/n/12 = []\OML/ztmcm/m/it/12 Im [] ^^Nc
+[][]Y[]\OT1/ztmcm/m/n/12 (\OML/ztmcm/m/it/12 ^^R; ^^^\OT1/ztmcm/m/n/12 )\OMS/zt
+mcm/m/n/12 f\OT1/ztmcm/m/n/12 (\OML/ztmcm/m/it/12 ^^O[] \OMS/ztmcm/m/n/12 ^^@ \
+OML/ztmcm/m/it/12 ^^O[]\OT1/ztmcm/m/n/12 )[\OT1/ptm/b/n/12 E[]\OT1/ztmcm/m/n/12
+ (\OT1/ptm/b/n/12 x[]\OT1/ztmcm/m/n/12 )][] + ([] \OMS/ztmcm/m/n/12 ^^@ []\OT1/
+ztmcm/m/n/12 )[\OT1/ptm/b/n/12 D[]\OT1/ztmcm/m/n/12 (\OT1/ptm/b/n/12 x[]\OT1/zt
+mcm/m/n/12 )][]\OMS/ztmcm/m/n/12 g\OML/ztmcm/m/it/12 ^^NA[]\OT1/ztmcm/m/n/12 (\
+OML/ztmcm/m/it/12 ^^R; ^^^\OT1/ztmcm/m/n/12 )\OML/ztmcm/m/it/12 :
+ []
 
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 172.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 168.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 172.
 
 <TwoSphere.png, id=19, 969.6225pt x 867.24pt>
 File: TwoSphere.png Graphic file (type png)
  <use TwoSphere.png>
-Package pdftex.def Info: TwoSphere.png used on input line 174.
+Package pdftex.def Info: TwoSphere.png used on input line 178.
 (pdftex.def)             Requested size: 212.41261pt x 189.97295pt.
  [3] [4 <./TwoSphere.png>] 
 AED: lastpage setting LastPage
 [5] (./ShapeOpt.aux) ) 
 Here is how much of TeX's memory you used:
- 3854 strings out of 493014
- 52804 string characters out of 6133351
+ 3856 strings out of 493014
+ 52816 string characters out of 6133351
  129817 words of memory out of 5000000
  7251 multiletter control sequences out of 15000+600000
- 49130 words of font info for 117 fonts, out of 8000000 for 9000
+ 49552 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,8n,43p,605b,285s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/
@@ -505,7 +515,7 @@ ve/2016/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2016/tex
 mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fo
 nts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/
 urw/times/utmri8a.pfb>
-Output written on ShapeOpt.pdf (5 pages, 177873 bytes).
+Output written on ShapeOpt.pdf (5 pages, 178340 bytes).
 PDF statistics:
  64 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream

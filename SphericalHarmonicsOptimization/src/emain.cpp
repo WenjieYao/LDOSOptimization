@@ -26,7 +26,7 @@ double lambda_0 = 550;                          // wavelength in unit of nm
 const unsigned int num_coeffs =2;               // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
-double d_min = 50.0;                           // minimum distance in unit of nm
+double d_min = 100.0;                           // minimum distance in unit of nm
 int min_mesh = 2000;
 int max_mesh = 5000;
 double resolution = 1.5;                        // resolution, larger the finer, default 1
@@ -91,14 +91,14 @@ int main(){
   opt.set_max_objective(myfunc, NULL);
 
   opt.set_maxeval(MAX_ITER);
-  //opt.set_xtol_abs(0);
+  opt.set_xtol_abs(1e-4);
   //opt.set_xtol_rel(0);
   //opt.get_maxeval();
 
   std::vector<double> x(Nc);
   //x[0]=d_min/1e3*4*pi;                          // initial value Ylm(0,0,0,0)^2 = 4pi
-  x[0] = 170.0/1e3;
-  x[1] = 50.0/1e3;
+  x[0] = 194.0/1e3;
+  x[1] = 100.0/1e3;
   double maxf;
   std::cout << "Starting optimization... " << std::endl;
   nlopt::result result = opt.optimize(x, maxf);
