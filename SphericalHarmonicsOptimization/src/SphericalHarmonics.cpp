@@ -67,15 +67,17 @@ double SphericalHarmonics::drdc(unsigned i, double t, double p) const {
 
 double SphericalHarmonics::drdt(double t, double p) const {
     double f = 0;
-    for (unsigned i=0; i<N; ++i)
-        f += c[i] * dYdTheta(l[i], m[i], t, p);
+    for (unsigned i=1; i<N; ++i)
+        f += c[i] * dYdTheta(l[i-1], m[i-1], t, p);
+    f *= sqrt(radius(t,p)-c[0])*2;
     return f;
 }
 
 double SphericalHarmonics::drdp(double t, double p) const {
     double f = 0;
-    for (unsigned i=0; i<N; ++i)
-        f += c[i] * dYdPhi(l[i], m[i], t, p);
+    for (unsigned i=1; i<N; ++i)
+        f += c[i] * dYdPhi(l[i-1], m[i-1], t, p);
+    f *= sqrt(radius(t,p)-c[0])*2;
     return f;
 }
 

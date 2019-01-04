@@ -121,7 +121,7 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
       for (int ic=0;ic<num_coeffs-1;++ic){
         double Ynx;
         Ynx = sh->Ylm(l[ic],m[ic],theta,phi);
-        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*sqrt(d_temp-coeffs[0]);
+        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*sqrt(d_temp-coeffs[0])/sqrt(1+sh->drdt(theta,phi)*sh->drdt(theta,phi)+sh->drdp(theta,phi)*sh->drdp(theta,phi));
       }
       d_temp *= 1e3;
       if (d_min>d_temp)

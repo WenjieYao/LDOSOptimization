@@ -35,7 +35,7 @@ class SphericalHarmonics : public BaseGeo {
         static double dYdTheta(unsigned l, int m, double t, double p);
         static void theta_phi(double x, double y, double z, double &t, double &p);
 
-    private:
+    //private:
         void set_min_radius(double val);
         void set_max_radius(double val);
         void init_lm();
