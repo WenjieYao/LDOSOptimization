@@ -47,7 +47,7 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
   WriteCoeff(coeffs,num_coeffs);
   double el = 0;
   for (int i=0;i<num_coeffs;++i)
-    el += coeffs[i];
+    el += abs(coeffs[i]);
   el = el/100.0/resolution; //maximum edge length
   std::string MeshCommand = "./SHMesher coeff.txt "
       +std::to_string(num_coeffs)+" "+std::to_string(el)+" Ellipsoid.msh "

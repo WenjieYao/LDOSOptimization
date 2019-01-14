@@ -26,7 +26,7 @@ double lambda_0 = 550;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 5*5+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
-double d_min = 100;                             // minimum distance in unit of nm
+double d_min = 50;                             // minimum distance in unit of nm
 int min_mesh = 2000;
 int max_mesh = 5000;
 double resolution = 1.5;                        // resolution, larger the finer, default 1
@@ -146,7 +146,7 @@ int main(){
  std::cout << "Start converting spheroid to spherical harmonics" << std::endl;
   std::vector<double> x(Nc-1);
   double *coeff = new double[Nc-1];
-  double r1 = 190/1e3;
+  double r1 = 170/1e3;
   double r2 = d_min/1e3;
   for(int i=0;i<Nc-1;++i)
     coeff[i] = 0;
