@@ -13,6 +13,7 @@
 //#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 //#include <CGAL/Implicit_mesh_domain_3.h>
 
+
 // default triangulation for Surface_mesher
 typedef CGAL::Surface_mesh_default_triangulation_3 Tr;
 typedef CGAL::Complex_2_in_triangulation_3<Tr> C2t3;
@@ -61,7 +62,7 @@ void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, m
 
     std::ofstream out(mi->offFile);
     out << std::setprecision(16);
-    CGAL::output_surface_facets_to_off (out, c2t3, 0);
+    std::cout << CGAL::output_surface_facets_to_off (out, c2t3, 0) << std::endl;
 
     unsigned numPanels = c2t3.number_of_facets();
     double *panelAreas = new double[numPanels];
@@ -106,8 +107,10 @@ void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, m
         std::cout << "volume: " << volume << std::endl;
     }
 
-    if(mi->convertToGMSH)
+    if(mi->convertToGMSH){
+        system("ls *.off");
         ConvertOFFtoGMSH(mi->offFile, mi->gmshFile, mi->verbose);
+    }
 
     mo->numPanels = numPanels;
     mo->panelAreas = panelAreas;
