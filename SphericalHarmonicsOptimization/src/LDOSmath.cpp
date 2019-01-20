@@ -157,7 +157,7 @@ void LDOS_gradient(double lambda_0, double r1, double r2,
   std::string MeshCommand = "./GeoMesher ellipsoid "
       +std::to_string(r1)+" "+std::to_string(r1)+" "+std::to_string(r2)+" "
       +std::to_string(el)+" 0 "+std::to_string(min_mesh)+" "+std::to_string(max_mesh);
-  std::cout << MeshCommand.c_str() << std::endl;
+  //std::cout << MeshCommand.c_str() << std::endl;
   system(MeshCommand.c_str()); //create mesh
   std::cout << "Mesh complete." << std::endl;
   /***************************************************************/

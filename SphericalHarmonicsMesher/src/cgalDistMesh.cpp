@@ -59,9 +59,12 @@ void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, m
     CGAL::Surface_mesh_default_criteria_3<Tr> criteria(30., 3.*maxEdgeLength, maxEdgeLength); 
     CGAL::make_surface_mesh(c2t3, surface, criteria, CGAL::Manifold_with_boundary_tag());
 
-    std::ofstream out(mi->offFile);
-    out << std::setprecision(16);
-    CGAL::output_surface_facets_to_off (out, c2t3, 0);
+    {
+        std::ofstream out(mi->offFile);
+        out << std::setprecision(16);
+        CGAL::output_surface_facets_to_off (out, c2t3, 0);
+    }
+    sync();
 
     unsigned numPanels = c2t3.number_of_facets();
     double *panelAreas = new double[numPanels];

@@ -12,8 +12,8 @@
 
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
-#define MAX_ITER1 10                             // maximum number for number of coeff sets
-#define MAX_ITER2 10                             // maximum number for number of coeff sets
+#define MAX_ITER1 20                             // maximum number for number of coeff sets
+#define MAX_ITER2 20                             // maximum number for number of coeff sets
 #define MAX_ITER MAX_ITER1*MAX_ITER2                             // maximum number for number of coeff sets
 #define Nc 2
 /***************************************************************/
@@ -30,7 +30,7 @@ int main()
   int max_mesh = 5000;
   double r1 = 200.0/1e3;
   double r2 = d_min/1000;
-  double delta_c = 2.0/1e3;                     // increasement of coefficients used
+  double delta_c = 1.0/1e3;                     // increasement of coefficients used
 
   double resolution = 1.5;                      // resolution, larger the finer, default 1
   
