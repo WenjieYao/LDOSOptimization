@@ -24,15 +24,15 @@ int main()
   double lambda_0 = 550;                        // wavelength in unit of nm
   double k_0 = 2*pi/lambda_0;                   // wavenumber in unit of 1/nm
   cdouble Chi = 0;                              // chi = epsilon-1
-  double d_min = 200;                           // minimum distance in unit of nm
+  double d_min = 100;                           // minimum distance in unit of nm
   
   int min_mesh = 1000;
   int max_mesh = 5000;
-  double r1 = 200.0/1e3;
+  double r1 = 190.0/1e3;
   double r2 = d_min/1000;
   double delta_c = 1.0/1e3;                     // increasement of coefficients used
 
-  double resolution = 1.5;                      // resolution, larger the finer, default 1
+  double resolution = 1.0;                      // resolution, larger the finer, default 1
   
   /****************Loop for different coeff LDOS ***************************/
   double Rho_s[MAX_ITER1][MAX_ITER2];                       // array to store all elecric LDOS
