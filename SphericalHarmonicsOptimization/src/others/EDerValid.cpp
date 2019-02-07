@@ -12,8 +12,8 @@
 
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
-#define MAX_ITER1 10                             // maximum number for number of coeff sets
-#define MAX_ITER2 10                             // maximum number for number of coeff sets
+#define MAX_ITER1 20                             // maximum number for number of coeff sets
+#define MAX_ITER2 20                             // maximum number for number of coeff sets
 #define MAX_ITER MAX_ITER1*MAX_ITER2                             // maximum number for number of coeff sets
 #define Nc 2
 /***************************************************************/
@@ -26,13 +26,13 @@ int main()
   cdouble Chi = 0;                              // chi = epsilon-1
   double d_min = 100;                           // minimum distance in unit of nm
   
-  int min_mesh = 100;
-  int max_mesh = 500;
+  int min_mesh = 1000;
+  int max_mesh = 5000;
   double r1 = 190.0/1e3;
   double r2 = d_min/1000;
-  double delta_c = 2.0/1e3;                     // increasement of coefficients used
+  double delta_c = 1.0/1e3;                     // increasement of coefficients used
 
-  double resolution = 0.5;                      // resolution, larger the finer, default 1
+  double resolution = 1.0;                      // resolution, larger the finer, default 1
   
   /****************Loop for different coeff LDOS ***************************/
   double Rho_s[MAX_ITER1][MAX_ITER2];                       // array to store all elecric LDOS
