@@ -1,0 +1,13 @@
+REGION Exterior        MATERIAL Vacuum
+REGION Shell           MATERIAL FILE_Silver.txt
+REGION Interior        MATERIAL Vacuum
+
+SURFACE Shell1
+    MESHFILE Ellipsoid1.msh
+    REGIONS Exterior Shell
+ENDSURFACE
+
+SURFACE Shell2
+    MESHFILE Ellipsoid2.msh
+    REGIONS Shell Interior
+ENDSURFACE

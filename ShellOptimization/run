@@ -1,0 +1,5 @@
+rm scuff-scatter.log
+rm bin/Shell
+cmake -DCMAKE_CXX_COMPILER=g++-7
+make
+./bin/Shell
