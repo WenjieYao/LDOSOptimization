@@ -10,6 +10,7 @@
 #include <functional>
 #include "cgalDistMesh.h"
 #include "meshutils.h"
+#include "Surface_mesh_custom_criterion.h"
 //#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 //#include <CGAL/Implicit_mesh_domain_3.h>
 
@@ -46,7 +47,7 @@ FT returnDist(Point_3 p) {
 
 // maxLength = max edge length
 // numPoints = number of random points to find the max. radius
-void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo) {
+void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo, double d_bound) {
     df = dist_function;
 
     Tr tr;            // 3D-Delaunay triangulation
@@ -56,7 +57,7 @@ void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, m
     
     // inputs are angular bound, radius bound, then distance bound
     //CGAL::Surface_mesh_default_criteria_3<Tr> criteria(30., spherical_sizing_field, spherical_sizing_field); 
-    CGAL::Surface_mesh_default_criteria_3<Tr> criteria(30., 3.*maxEdgeLength, maxEdgeLength); 
+    CGAL::Surface_mesh_custom_criteria_3<Tr> criteria(30., 3.*maxEdgeLength, maxEdgeLength, 15.*maxEdgeLength, 5.*maxEdgeLength, d_bound); 
     CGAL::make_surface_mesh(c2t3, surface, criteria, CGAL::Manifold_with_boundary_tag());
 
     {
@@ -119,7 +120,7 @@ void cgalDistMesh_single(dist_fx dist_function, double bound, mesh_inputs *mi, m
     mo->volume = volume;
 }
 
-void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo) {
+void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo, double d_bound) {
     unsigned numPanels;
     double avgNumPanels = 0.5 * (mi->minNumPanels + mi->maxNumPanels);
     //std::cout << "min number of panels: " << mi->minNumPanels << std::endl;
@@ -131,7 +132,7 @@ void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_out
     unsigned cnt = 0;
     while(cnt++ < maxRetry) {
         std::cout << "maxEdgeLength: " << mi_copy.maxEdgeLength << std::endl;
-        cgalDistMesh_single(dist_function, bound, &mi_copy, mo);
+        cgalDistMesh_single(dist_function, bound, &mi_copy, mo, d_bound);
         if ((mo->numPanels > mi->maxNumPanels) || (mo->numPanels < mi->minNumPanels))
             mi_copy.maxEdgeLength *= sqrt(mo->numPanels / avgNumPanels);
         else

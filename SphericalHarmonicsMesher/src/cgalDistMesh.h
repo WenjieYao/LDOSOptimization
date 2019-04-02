@@ -17,7 +17,7 @@ typedef struct {
 
 typedef double (*dist_fx)(double x, double y, double z);
 
-void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo);
+void cgalDistMesh(dist_fx dist_function, double bound, mesh_inputs *mi, mesh_outputs *mo, double d_bound=INFINITY);
 //void ConvertOFFtoGMSH(const char *OFFFileIn, const char *GMSHFileOut, int verbose=0);
 
 #endif

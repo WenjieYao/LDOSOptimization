@@ -51,7 +51,7 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
   el = el/100.0/resolution; //maximum edge length
   std::string MeshCommand = "./SHMesher coeff.txt "
       +std::to_string(num_coeffs)+" "+std::to_string(el)+" Ellipsoid.msh "
-      +std::to_string(min_mesh)+" "+std::to_string(max_mesh);
+      +std::to_string(min_mesh)+" "+std::to_string(max_mesh)+" "+std::to_string(0.05+d_min/1e3);
   system(MeshCommand.c_str()); //create mesh
   std::cout << "Mesh complete." << std::endl;
   geometry::SphericalHarmonics *sh;  //create spherical harmonic class

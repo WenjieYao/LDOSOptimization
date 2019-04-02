@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
     double bound;
     filename = std::string(argv[1]);
     num_coeffs = atoi(argv[2]);
+    double  d_bound = strtod(argv[7], 0);
+    std::cout << "d_bound: " << d_bound << std::endl;
     coeffs = new double[num_coeffs];
     read_coeffs_from_file(filename, coeffs);
     /*
@@ -61,15 +63,15 @@ int main(int argc, char *argv[]) {
     std::string output_file = std::string(argv[4]);
     const char *gmshFile = output_file.c_str();
 
-    int min_tri = (argc==7) ? atoi(argv[5]) : 50;
-    int max_tri = (argc==7) ? atoi(argv[6]) : 20000;
+    int min_tri = (argc==8) ? atoi(argv[5]) : 50;
+    int max_tri = (argc==8) ? atoi(argv[6]) : 20000;
     mesh_inputs mi = {min_tri, max_tri, 0, maxEdgeLength, true, offFile, gmshFile};
     mesh_outputs mo;
 
     bg = new geometry::SphericalHarmonics(num_coeffs, coeffs, -1e6, 1e6);
     bound = bg->bound_squared_radius();
     std::cout << "bound: " << bound << std::endl;
-    cgalDistMesh(spherical_harmonics_dist_function, bound, &mi, &mo);
+    cgalDistMesh(spherical_harmonics_dist_function, bound, &mi, &mo, d_bound);
     ConvertOFFtoGMSH(offFile, gmshFile, 1);
     system("rm out.off");
     return 0;

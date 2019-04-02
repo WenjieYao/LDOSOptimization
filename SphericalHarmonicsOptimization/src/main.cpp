@@ -26,10 +26,10 @@ double lambda_0 = 400;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 5*5+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
-double d_min = 100;                             // minimum distance in unit of nm
+double d_min = 20;                             // minimum distance in unit of nm
 int min_mesh = 2000;
 int max_mesh = 5000;
-double resolution = 1.5;                        // resolution, larger the finer, default 1
+double resolution = 5.0;                        // resolution, larger the finer, default 1
 
 
 double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data){
@@ -131,8 +131,8 @@ int main(){
   std::vector<double> lb(Nc-1);
    std::vector<double> ub(Nc-1);
   for (int i=0;i<Nc-1;++i){
-    lb[i] = -10;
-    ub[i] = 10;
+    lb[i] = -5;
+    ub[i] = 5;
   }
   opt.set_lower_bounds(lb);
   opt.set_upper_bounds(ub);
@@ -150,7 +150,9 @@ int main(){
   double r2 = 128/1e3;
   for(int i=0;i<Nc-1;++i)
     coeff[i] = 0;
-  SpheroidToHarmonics(coeff,Nc-1,r1,r2);
+  coeff[4] = 1.0;
+  coeff[8] = 1.0;
+  //SpheroidToHarmonics(coeff,Nc-1,r1,r2);
   //x[0]=d_min/1e3*4*pi;                          // initial value 
   for(int i=0;i<Nc-1;++i){
     x[i] = coeff[i];
