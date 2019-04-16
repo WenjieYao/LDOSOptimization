@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  2 JAN 2019 13:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  2 APR 2019 13:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -488,37 +488,68 @@ File: omsptm.fd
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 172.
 
-<TwoSphere.png, id=19, 969.6225pt x 867.24pt>
-File: TwoSphere.png Graphic file (type png)
- <use TwoSphere.png>
-Package pdftex.def Info: TwoSphere.png used on input line 178.
-(pdftex.def)             Requested size: 212.41261pt x 189.97295pt.
- [3] [4 <./TwoSphere.png>] 
+<shape1.png, id=19, 674.52pt x 603.25375pt>
+File: shape1.png Graphic file (type png)
+ <use shape1.png>
+Package pdftex.def Info: shape1.png used on input line 180.
+(pdftex.def)             Requested size: 212.41261pt x 189.9707pt.
+
+<shape2.png, id=21, 635.37375pt x 577.15625pt>
+File: shape2.png Graphic file (type png)
+ <use shape2.png>
+Package pdftex.def Info: shape2.png used on input line 181.
+(pdftex.def)             Requested size: 212.41261pt x 192.94563pt.
+ [3]
+<10cov.png, id=25, 415.5525pt x 327.3831pt>
+File: 10cov.png Graphic file (type png)
+ <use 10cov.png>
+Package pdftex.def Info: 10cov.png used on input line 195.
+(pdftex.def)             Requested size: 212.41261pt x 167.34282pt.
+
+<20cov.png, id=26, 409.0482pt x 327.3831pt>
+File: 20cov.png Graphic file (type png)
+ <use 20cov.png>
+Package pdftex.def Info: 20cov.png used on input line 196.
+(pdftex.def)             Requested size: 212.41261pt x 170.0004pt.
+ [4 <./shape1.png> <./shape2.png> <./10cov.png> <./20cov.png>]
+<450limit.png, id=34, 415.5525pt x 327.3831pt>
+File: 450limit.png Graphic file (type png)
+ <use 450limit.png>
+Package pdftex.def Info: 450limit.png used on input line 222.
+(pdftex.def)             Requested size: 212.41261pt x 167.34282pt.
+
+<550limit.png, id=35, 415.5525pt x 327.3831pt>
+File: 550limit.png Graphic file (type png)
+ <use 550limit.png>
+Package pdftex.def Info: 550limit.png used on input line 223.
+(pdftex.def)             Requested size: 212.41261pt x 167.34282pt.
+
+
 AED: lastpage setting LastPage
-[5] (./ShapeOpt.aux) ) 
+[5 <./450limit.png> <./550limit.png>] (./ShapeOpt.aux) ) 
 Here is how much of TeX's memory you used:
- 3856 strings out of 493014
- 52816 string characters out of 6133351
+ 3881 strings out of 493014
+ 53156 string characters out of 6133351
  129817 words of memory out of 5000000
- 7251 multiletter control sequences out of 15000+600000
+ 7271 multiletter control sequences out of 15000+600000
  49552 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,8n,43p,605b,285s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/
-8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex1
-0.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10
-.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.p
-fb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
-b></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texli
-ve/2016/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2016/tex
-mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fo
-nts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/
-urw/times/utmri8a.pfb>
-Output written on ShapeOpt.pdf (5 pages, 178340 bytes).
+ 38i,8n,43p,605b,223s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/201
+6/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
+ype1/urw/courier/ucrr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw
+/symbol/usyr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/symbol/usy
+r.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></us
+r/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/te
+xlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on ShapeOpt.pdf (5 pages, 336875 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
+ 74 PDF objects out of 1000 (max. 8388607)
  44 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

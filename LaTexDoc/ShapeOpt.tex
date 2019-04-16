@@ -173,12 +173,29 @@ Regarding this gradient, there are several problems:
 \item We can't start with a sphere with minimum distance $c_0=d_{min}$, this will cause all gradients equal to 0 since $x^\prime=c_0$ at the first iteration. To resolve this problem, if we still want to start with a sphere, we need to set the initial radius of the sphere to be $r=c_0+\frac{c_1^2}{4\pi}$ for some none zero $c_1$ (note that $Y_1^2=\frac{1}{4\pi}$).
 \item When the initial guess is a sphere close to the resonance, we notice that the derivative $\partial \rho_e/\partial c_1$ is much larger than all other derivatives (approximately $10^5$ times larger). This means the optimal structure near a sphere is just a sphere, and we can't find another structure since it will converge to the local maximum. 
 \item To avoid the problem above, we need a initial guess other than the sphere. One possible shape is the combination of two resonant sphere, similar to the structure below.
+\end{itemize}
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.45\linewidth]{TwoSphere.png}
+\includegraphics[width=0.45\linewidth]{shape1.png}
+\includegraphics[width=0.45\linewidth]{shape2.png}
+%\caption{Caption\label{fig1} }
 \end{figure}
-However, the problem now is how to make the mesh such that the resolution around the neck is much finer than else where.
-\end{itemize}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.45\linewidth]{TwoSphere.png}
+%\end{figure}
+%However, the problem now is how to make the mesh such that the resolution around the neck is much finer than else where.
+%
+
+However, it's very hard to get convergence and the LDOS falls far short from the limit. For the 10nm case the limit is around 9000 and the limit is 1000 for 20nm.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\linewidth]{10cov.png}
+\includegraphics[width=0.45\linewidth]{20cov.png}
+%\caption{Caption\label{fig1} }
+\end{figure}
 
 \section{Limits to LDOS}
 In Owen's paper \cite{main}, the limits to the LDOS is 
@@ -198,6 +215,15 @@ For a enclosure of minimum separation distance $d$, we have
 \end{equation}
 
 As discussed in Owen's paper, the $O(kL)$ term represents the largest interaction distances over which polarization currents contribute to the LDOS. For small $d$, we can neglect this term since $\frac{1}{(kd)^3}$ is the dominant term and is much larger than other terms. However, for $kd\leq 1$ (for example, $d=200$ nm), the first two terms are smaller than 1, now the problem is what is the approximate value for $O(kL)$? If it is in the order of 1, then the bound should approximately double, which is not really we want to see. Therefore we might need to stick with the small $d$ case?
+
+If we add the $O(kL)$ term as $kt$ where $t$ is the thickness of the sphere shell, we have
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\linewidth]{450limit.png}
+\includegraphics[width=0.45\linewidth]{550limit.png}
+%\caption{Caption\label{fig1} }
+\end{figure}
+
 %\begin{figure}[H]
 %\centering
 %\includegraphics[width=0.45\linewidth]{SV550.png}
