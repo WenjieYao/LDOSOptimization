@@ -85,7 +85,6 @@ int main(){
   std::vector<double> x;
   std::vector<double> grad0;
   std::vector<double> grad;
-  double alpha = 1;
   for (int i=0;i<Nc-1;++i){
     x0.push_back(0);
     x.push_back(0);
@@ -97,8 +96,12 @@ int main(){
   //x0[8] = 1.0;
   double rhos = myfunc(x0,grad0);
   double ng = 0;
+  double step = rhos/10;
+  double alpha = step;
   for (auto i = grad0.begin(); i != grad0.cend(); ++i) 
     ng += (*i)*(*i);
+  std::cout << "ng:" << ng <<std::endl;
+  std::cout << "step:" << step << std::endl;
   std::cout << "rhos: " << rhos << std::endl;
   std::cout << "x0: " ;
   for (auto i = x0.begin(); i != x0.cend(); ++i) 
@@ -108,16 +111,22 @@ int main(){
     for (int i=0;i<Nc-1;++i)
       x[i] = x0[i]+alpha*grad0[i]/ng;
     myfunc(x,grad);
-    alpha += 1;
+    alpha += step;
   }
   
   //std::cout << "rho: " << maxf << std::endl;
   double rho_limit = pow(k_0*d_min,-3)*abs(Chi*Chi)/imag(Chi)*(1+pow(k_0*d_min,2));
   std::cout << "d_min: " << d_min << std::endl;
   std::cout << "rho_limit: " << rho_limit << std::endl;
-  std::cout << "ng:" << ng <<std::endl;
+  
   results_file.open ("results.txt",std::ios::app);
   results_file << "ng:" << ng ;
+  results_file << "\n";
+  results_file << "step:" << step ;
+  results_file << "\n";
+  results_file << "rho_limit:" << rho_limit ;
+  results_file << "\n";
+  results_file << "d_min:" << d_min;
   results_file << "\n";
   results_file.close();
 }
