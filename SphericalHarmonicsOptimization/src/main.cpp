@@ -92,7 +92,7 @@ int main(){
     grad0.push_back(0);
     grad.push_back(0);
   }
-  x0[0] = 1;
+  x0[0] = 1.1;
   //x0[5] = 1.0;
   //x0[8] = 1.0;
   double rhos = myfunc(x0,grad0);
@@ -104,10 +104,6 @@ int main(){
   for (auto i = x0.begin(); i != x0.cend(); ++i) 
     cout << *i << " ";
   std::cout << std::endl;
-  results_file.open ("results.txt");
-  results_file << "ng:" << ng ;
-  results_file << "\n";
-  results_file.close();
   for (int k=0;k<MAX_ITER;k++){
     for (int i=0;i<Nc-1;++i)
       x[i] = x0[i]+alpha*grad0[i]/ng;
@@ -120,5 +116,8 @@ int main(){
   std::cout << "d_min: " << d_min << std::endl;
   std::cout << "rho_limit: " << rho_limit << std::endl;
   std::cout << "ng:" << ng <<std::endl;
-  
+  results_file.open ("results.txt",std::ios::app);
+  results_file << "ng:" << ng ;
+  results_file << "\n";
+  results_file.close();
 }
