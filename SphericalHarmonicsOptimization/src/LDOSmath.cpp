@@ -25,6 +25,24 @@ void WriteCoeff(double *coeffs, const unsigned int num_coeffs){
   coeff_file.close();
 }
 
+bool CompareCoeff(double *coeffs, const unsigned int num_coeffs){
+  std::ifstream file("coeff.txt");
+  double *Excoeffs = new double[num_coeffs];
+  if (file.is_open()) {
+    for(int i=0;i<num_coeffs;++i){
+      file >> Excoeffs[i];
+    }
+    file.close();
+  }
+  double diff = 0;
+  for(int i=0;i<num_coeffs;++i)
+    diff += pow(Excoeffs[i]-coeffs[i],2);
+  bool rv = false;
+  if(diff<1)
+    rv = true;
+  delete Excoeffs;
+  return rv;
+}
 
 void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeffs, 
                   double &rho_s, double *dfdx, cdouble &Chi, double &d_min, 
@@ -51,7 +69,7 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
   el = el/100.0/resolution; //maximum edge length
   std::string MeshCommand = "./SHMesher coeff.txt "
       +std::to_string(num_coeffs)+" "+std::to_string(el)+" Ellipsoid.msh "
-      +std::to_string(min_mesh)+" "+std::to_string(max_mesh)+" "+std::to_string(0.02+d_min/1e3);
+      +std::to_string(min_mesh)+" "+std::to_string(max_mesh)+" "+std::to_string(0.01+d_min/1e3);
   system(MeshCommand.c_str()); //create mesh
   std::cout << "Mesh complete." << std::endl;
   geometry::SphericalHarmonics *sh;  //create spherical harmonic class
@@ -118,10 +136,16 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
       sh->theta_phi(real(PSDMatrix[ps]->GetEntry(np,0)),real(PSDMatrix[ps]->GetEntry(np,1)),real(PSDMatrix[ps]->GetEntry(np,2)),theta,phi);
       // store the derivative in every coefficient respectively
       double d_temp = sh->radius(theta,phi);
+      double d_sum =0;
       for (int ic=0;ic<num_coeffs-1;++ic){
         double Ynx;
         Ynx = sh->Ylm(l[ic],m[ic],theta,phi);
-        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*sqrt(d_temp-coeffs[0])/sqrt(1+sh->drdt(theta,phi)*sh->drdt(theta,phi)+sh->drdp(theta,phi)*sh->drdp(theta,phi));
+        d_sum += coeffs[ic+1]*Ynx;
+        }
+      for (int ic=0;ic<num_coeffs-1;++ic){
+        double Ynx;
+        Ynx = sh->Ylm(l[ic],m[ic],theta,phi);
+        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*d_sum/sqrt(1+sh->drdt(theta,phi)*sh->drdt(theta,phi)+sh->drdp(theta,phi)*sh->drdp(theta,phi));
       }
       d_temp *= 1e3;
       if (d_min>d_temp)

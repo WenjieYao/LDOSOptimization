@@ -91,21 +91,21 @@ int main(){
     grad0.push_back(0);
     grad.push_back(0);
   }
-  x0[0] = 1.1;
-  //x0[5] = 1.0;
+  x0[2] = 0.9;
+  //x0[0] = 0.0;
   //x0[8] = 1.0;
   double rhos = myfunc(x0,grad0);
   double ng = 0;
   double step = rhos/10;
   double alpha = step;
-  for (auto i = grad0.begin(); i != grad0.cend(); ++i) 
-    ng += (*i)*(*i);
+  for (int i=0; i < Nc -1 ; ++i) 
+    ng += grad0[i]*grad0[i];
   std::cout << "ng:" << ng <<std::endl;
   std::cout << "step:" << step << std::endl;
   std::cout << "rhos: " << rhos << std::endl;
   std::cout << "x0: " ;
-  for (auto i = x0.begin(); i != x0.cend(); ++i) 
-    cout << *i << " ";
+  for (int i=0; i < Nc -1 ; ++i) 
+    cout << x0[i] << " ";
   std::cout << std::endl;
   for (int k=0;k<MAX_ITER;k++){
     for (int i=0;i<Nc-1;++i)
