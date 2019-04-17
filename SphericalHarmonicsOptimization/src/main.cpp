@@ -15,7 +15,7 @@
 
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
-#define MAX_ITER 40                            // maximum number for number of coeff sets 
+#define MAX_ITER 20                            // maximum number for number of coeff sets 
 #define Nc num_coeffs                           // simplified number of coefficients
 
 int fcount = 0;
@@ -91,12 +91,12 @@ int main(){
     grad0.push_back(0);
     grad.push_back(0);
   }
-  x0[2] = 0.9;
+  x0[2] = 1.1;
   //x0[0] = 0.0;
   //x0[8] = 1.0;
   double rhos = myfunc(x0,grad0);
   double ng = 0;
-  double step = rhos/10;
+  double step = rhos/100;
   double alpha = step;
   for (int i=0; i < Nc -1 ; ++i) 
     ng += grad0[i]*grad0[i];

@@ -137,15 +137,14 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
       // store the derivative in every coefficient respectively
       double d_temp = sh->radius(theta,phi);
       double d_sum =0;
+      double Ynx=0;
       for (int ic=0;ic<num_coeffs-1;++ic){
-        double Ynx;
         Ynx = sh->Ylm(l[ic],m[ic],theta,phi);
         d_sum += coeffs[ic+1]*Ynx;
         }
       for (int ic=0;ic<num_coeffs-1;++ic){
-        double Ynx;
         Ynx = sh->Ylm(l[ic],m[ic],theta,phi);
-        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*d_sum/sqrt(1+sh->drdt(theta,phi)*sh->drdt(theta,phi)+sh->drdp(theta,phi)*sh->drdp(theta,phi));
+        dfdx[ic] += 2*Ynx*imag(dfdx_temp)/rho_0*d_sum/sqrt(1+pow(sh->drdt(theta,phi)/d_temp,2)+pow(sh->drdp(theta,phi)/d_temp/sin(theta),2));
       }
       d_temp *= 1e3;
       if (d_min>d_temp)
