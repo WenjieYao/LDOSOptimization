@@ -15,21 +15,22 @@
 
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
-#define MAX_ITER 400                            // maximum number for number of coeff sets 
+#define MAX_ITER 200                            // maximum number for number of coeff sets 
 #define Nc num_coeffs                           // simplified number of coefficients
 
 int fcount = 0;
 /***************************************************************/
 /***************************************************************/
 /***************************************************************/
-double lambda_0 = 400;                          // wavelength in unit of nm
+double lambda_0 = 500;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 5*5+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 20;                             // minimum distance in unit of nm
+const double d_min_c = d_min;
 int min_mesh = 2000;
-int max_mesh = 5000;
-double resolution = 5.0;                        // resolution, larger the finer, default 1
+int max_mesh = 4000;
+double resolution = 10.0;                        // resolution, larger the finer, default 1
 
 
 double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data){
@@ -39,7 +40,7 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_
   std::cout << "iteratioins: " << fcount << std::endl;
   
   double *coeffs = new double[Nc];              // array to store coeffs
-  coeffs[0] =d_min/1e3;
+  coeffs[0] =d_min_c/1e3;
   for(int i=0;i<Nc-1;++i)
     coeffs[i+1] = x[i];
   double rho_s=0;                               // electric LDOS at center computed with 3 scatter simulation
@@ -148,10 +149,19 @@ int main(){
   double *coeff = new double[Nc-1];
   double r1 = 128/1e3;
   double r2 = 128/1e3;
-  for(int i=0;i<Nc-1;++i)
-    coeff[i] = 0;
-  coeff[4] = 1.0;
-  coeff[8] = 1.0;
+  // intial guess
+  if(true){
+    std::ifstream file("coeff_initial.txt");
+    if (file.is_open()){
+    for(int i=0;i<num_coeffs-1;++i){
+      file >> coeff[i];
+    }
+    file.close();
+    }
+  }
+  else{
+    coeff[2]=1.0;
+  }
   //SpheroidToHarmonics(coeff,Nc-1,r1,r2);
   //x[0]=d_min/1e3*4*pi;                          // initial value 
   for(int i=0;i<Nc-1;++i){
