@@ -28,9 +28,10 @@ const unsigned int num_coeffs = 5*5+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 20;                             // minimum distance in unit of nm
-int min_mesh = 2000;
-int max_mesh = 6000;
-double resolution = 20.0;                        // resolution, larger the finer, default 1
+const double d_min_c = d_min;                             // minimum distance in unit of nm
+int min_mesh = 4000;
+int max_mesh = 5000;
+double resolution = 10.0;                        // resolution, larger the finer, default 1
 
 
 double myfunc(std::vector<double> &x, std::vector<double> &grad){
@@ -40,7 +41,7 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
   std::cout << "iteratioins: " << fcount << std::endl;
   
   double *coeffs = new double[Nc];              // array to store coeffs
-  coeffs[0] =d_min/1e3;
+  coeffs[0] =d_min_c/1e3;
   for(int i=0;i<Nc-1;++i)
     coeffs[i+1] = x[i];
   double rho_s=0;                               // electric LDOS at center computed with 3 scatter simulation
@@ -131,9 +132,20 @@ int main(){
     grad.push_back(0);
     mc.push_back(0);
   }
-  x[2] = 1.00;
-  //x[6] = 0.1;
-  //x[8] = 0.1;
+  // intial guess
+  if(true){
+    std::ifstream file("coeff_initial.txt");
+    if (file.is_open()){
+    for(int i=0;i<num_coeffs-1;++i){
+      file >> x[i];
+    }
+    file.close();
+    }
+  }
+  else{
+    for(int i=1;i<num_coeffs-1;++i)
+      x[i] = 0.2/pow(i-3.5,2);
+  }
   for (int k=0;k<MAX_ITER;k++){
     myfunc(x,grad);
     double g2=0;

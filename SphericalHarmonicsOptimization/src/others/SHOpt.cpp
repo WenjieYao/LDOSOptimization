@@ -28,8 +28,8 @@ double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 20;                             // minimum distance in unit of nm
 const double d_min_c = d_min;
-int min_mesh = 2000;
-int max_mesh = 4000;
+int min_mesh = 4000;
+int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
 
 
@@ -132,8 +132,8 @@ int main(){
   std::vector<double> lb(Nc-1);
    std::vector<double> ub(Nc-1);
   for (int i=0;i<Nc-1;++i){
-    lb[i] = -5;
-    ub[i] = 5;
+    lb[i] = -2;
+    ub[i] = 2;
   }
   opt.set_lower_bounds(lb);
   opt.set_upper_bounds(ub);
