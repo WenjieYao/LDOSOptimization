@@ -31,7 +31,7 @@ const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 6000;
 double resolution = 15.0;                        // resolution, larger the finer, default 1
-
+int deriv = 7;
 
 double myfunc(std::vector<double> &x, std::vector<double> &grad){
   ofstream results_file;                          //write to file
@@ -54,6 +54,7 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
   }
   /* print out temporary information *************************************/
   results_file << rho_s << " ";
+  results_file << dfdx[deriv] << " ";
   std::cout << std::endl << "x: ";
   results_file << coeffs[0] << " ";
   for (int i=0;i<Nc-1;++i){
@@ -117,7 +118,7 @@ int main(){
   std::cout << std::endl;
   for (int k=0;k<MAX_ITER;k++){
     for (int i=0;i<Nc-1;++i)
-      x[i] = x0[i]+alpha*(i==1);
+      x[i] = x0[i]+alpha*(i==deriv);
     myfunc(x,grad);
     alpha += step;
   }
@@ -128,8 +129,6 @@ int main(){
   std::cout << "rho_limit: " << rho_limit << std::endl;
   
   results_file.open ("results.txt",std::ios::app);
-  results_file << "ng:" << ng ;
-  results_file << "\n";
   results_file << "step:" << step ;
   results_file << "\n";
   results_file << "rho_limit:" << rho_limit ;
