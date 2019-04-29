@@ -6,7 +6,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <ctime>
 #include "scuff-scatter.h"
 #include "basisfunctions.h"
 #include "LDOSmath.h"
@@ -16,7 +15,7 @@
 
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
-#define MAX_ITER 200                            // maximum number for number of coeff sets 
+#define MAX_ITER 20                            // maximum number for number of coeff sets 
 #define Nc num_coeffs                           // simplified number of coefficients
 
 int fcount = 0;
@@ -28,11 +27,11 @@ const unsigned int num_coeffs = 5*5+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 20;                             // minimum distance in unit of nm
-const double d_min_c = d_min;                             // minimum distance in unit of nm
+const double d_min_c = d_min;
 int min_mesh = 4000;
-int max_mesh = 5000;
+int max_mesh = 6000;
 double resolution = 15.0;                        // resolution, larger the finer, default 1
-
+int deriv = 7;
 
 double myfunc(std::vector<double> &x, std::vector<double> &grad){
   ofstream results_file;                          //write to file
@@ -51,10 +50,11 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
   LDOS_gradient(lambda_0, coeffs, num_coeffs, rho_s, dfdx, Chi,d_min ,min_mesh,max_mesh,resolution);
   if (!grad.empty()) {
     for (int i=0;i<Nc-1;++i)                        // gradient 
-        grad[i] = -dfdx[i]*(i!=1)*(i!=2)*(i!=3)*(i!=9)*(i!=10)*(i!=11)*(i!=12)*(i!=13)*(i!=14)*(i!=15);
+        grad[i] = dfdx[i];
   }
   /* print out temporary information *************************************/
   results_file << rho_s << " ";
+  results_file << dfdx[deriv] << " ";
   std::cout << std::endl << "x: ";
   results_file << coeffs[0] << " ";
   for (int i=0;i<Nc-1;++i){
@@ -65,103 +65,75 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
   std::cout << endl;
   std::cout << "dfdx: ";
   for (int i=0;i<Nc-1;++i){
-    std::cout << grad[i] << " ";
+    std::cout << dfdx[i] << " ";
   }
   std::cout << endl;
   std::cout << "rho: " << rho_s << std::endl << std::endl;
 
   delete[] coeffs;
   delete[] dfdx;
-  results_file.close();
   return rho_s;
+  results_file.close();
 }
 
-double testfunc(std::vector<double> &x, std::vector<double> &grad){
-  ofstream results_file;                          //write to file
-  results_file.open ("results.txt",std::ios::app);
-  ++fcount;
-  std::cout << "iteratioins: " << fcount << std::endl;
-  
-  double f=0;
-  double ferr = (rand()%100);
-  double sigma = 10.0;
-  ferr /= 1000.0;
-  for (int i=0;i<Nc-1;++i)
-    f += x[i]*x[i];
-  f = exp(-sigma*f)*(1+ferr-0.05);
-  if (!grad.empty()) {
-    for (int i=0;i<Nc-1;++i)                        // gradient 
-        grad[i] = 2*x[i]*f*sigma;
-  }
-  /* print out temporary information *************************************/
-  results_file << f << " ";
-  std::cout << std::endl << "x: ";
-  for (int i=0;i<Nc-1;++i){
-    std::cout << x[i] << " ";
-    results_file << x[i] << " ";
-  }
-  results_file << "\n";
-  std::cout << std::endl;
-  std::cout << "f: " << f << std::endl << std::endl;
-  results_file.close();
-  return f;
-}
 
 int main(){
-  srand((unsigned)time(0));
   ofstream results_file;                          //write to file
   results_file.open ("results.txt");
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  //adam parameters
-  double beta1 = 0.9;
-  double beta2 = 0.999;
-  double alpha = 0.01;
-  double epsilon = 1e-8;
-  //initial valuese
+  std::vector<double> x0;
   std::vector<double> x;
-  std::vector<double> m;
-  double v=0;
+  std::vector<double> grad0;
   std::vector<double> grad;
-  std::vector<double> mc;
-  double vc;
   for (int i=0;i<Nc-1;++i){
+    x0.push_back(0);
     x.push_back(0);
-    m.push_back(0);
+    grad0.push_back(0);
     grad.push_back(0);
-    mc.push_back(0);
   }
   // intial guess
-  if(false){
+  if(true){
     std::ifstream file("coeff_initial.txt");
     if (file.is_open()){
     for(int i=0;i<num_coeffs-1;++i){
-      file >> x[i];
+      file >> x0[i];
     }
     file.close();
     }
   }
   else{
-    x[4]=1.0;
+    for(int i=1;i<num_coeffs-1;++i)
+      x0[i] = 0.2/pow(i-3.5,2);
   }
+  double rhos = 0;//myfunc(x0,grad0);
+  double step = 0.01;//rhos/100;
+  double alpha = step;
+  std::cout << "step:" << step << std::endl;
+  std::cout << "rhos: " << rhos << std::endl;
+  std::cout << "x0: " ;
+  for (int i=0; i < Nc -1 ; ++i) 
+    cout << x0[i] << " ";
+  std::cout << std::endl;
   for (int k=0;k<MAX_ITER;k++){
+    for (int i=0;i<Nc-1;++i)
+      x[i] = x0[i]+alpha*(i==deriv);
     myfunc(x,grad);
-    double g2=0;
-    for (int i=0;i<Nc-1;++i){
-      m[i] = beta1*m[i]+(1-beta1)*grad[i];
-      g2 += grad[i]*grad[i];
-      mc[i] = m[i]/(1-pow(beta1,k+1));
-    }
-    v = beta2*v+(1-beta2)*g2;
-    vc = v/(1-pow(beta2,k+1));
-    for (int i=0;i<Nc-1;++i){
-      x[i] = x[i] - alpha*mc[i]/(sqrt(vc)+epsilon);
-    }
+    alpha += step;
   }
   
   //std::cout << "rho: " << maxf << std::endl;
   double rho_limit = pow(k_0*d_min,-3)*abs(Chi*Chi)/imag(Chi)*(1+pow(k_0*d_min,2));
   std::cout << "d_min: " << d_min << std::endl;
   std::cout << "rho_limit: " << rho_limit << std::endl;
+  
+  results_file.open ("results.txt",std::ios::app);
+  results_file << "step:" << step ;
+  results_file << "\n";
+  results_file << "rho_limit:" << rho_limit ;
+  results_file << "\n";
+  results_file << "d_min:" << d_min;
+  results_file << "\n";
+  results_file.close();
 }

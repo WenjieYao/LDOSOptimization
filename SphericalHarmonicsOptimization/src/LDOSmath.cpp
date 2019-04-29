@@ -41,7 +41,7 @@ bool CompareCoeff(double *coeffs, const unsigned int num_coeffs){
   for(int i=0;i<num_coeffs;++i)
     diff += abs(Excoeffs[i]-coeffs[i]);
   bool rv = false;
-  if(diff>1)
+  if(diff>0.1)
     rv = true;
   delete[] Excoeffs;
   return rv;
