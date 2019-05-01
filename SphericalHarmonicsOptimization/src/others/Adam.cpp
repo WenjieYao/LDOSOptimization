@@ -23,15 +23,15 @@ int fcount = 0;
 /***************************************************************/
 /***************************************************************/
 /***************************************************************/
-double lambda_0 = 400;                          // wavelength in unit of nm
-const unsigned int num_coeffs = 5*5+1;           // number of coefficients
+double lambda_0 = 500;                          // wavelength in unit of nm
+const unsigned int num_coeffs = 10*10+1;           // number of coefficients
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 20;                             // minimum distance in unit of nm
 const double d_min_c = d_min;                             // minimum distance in unit of nm
 int min_mesh = 4000;
 int max_mesh = 5000;
-double resolution = 10.0;                        // resolution, larger the finer, default 1
+double resolution = 15.0;                        // resolution, larger the finer, default 1
 
 
 double myfunc(std::vector<double> &x, std::vector<double> &grad){
@@ -50,8 +50,12 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
       dfdx[i] = 0.0;
   LDOS_gradient(lambda_0, coeffs, num_coeffs, rho_s, dfdx, Chi,d_min ,min_mesh,max_mesh,resolution);
   if (!grad.empty()) {
-    for (int i=0;i<Nc-1;++i)                        // gradient 
-        grad[i] = -dfdx[i];
+    for (int i=0;i<Nc-1;++i){                        // gradient 
+        int li=floor(sqrt(i));
+        int mi=i-li*li-li;
+        if((mi==0)&&((li%2)==1))
+          grad[i] = -dfdx[i];
+    }
   }
   /* print out temporary information *************************************/
   results_file << rho_s << " ";
@@ -65,7 +69,7 @@ double myfunc(std::vector<double> &x, std::vector<double> &grad){
   std::cout << endl;
   std::cout << "dfdx: ";
   for (int i=0;i<Nc-1;++i){
-    std::cout << dfdx[i] << " ";
+    std::cout << grad[i] << " ";
   }
   std::cout << endl;
   std::cout << "rho: " << rho_s << std::endl << std::endl;
@@ -126,6 +130,7 @@ int main(){
   std::vector<double> grad;
   std::vector<double> mc;
   double vc;
+  
   for (int i=0;i<Nc-1;++i){
     x.push_back(0);
     m.push_back(0);
@@ -133,7 +138,7 @@ int main(){
     mc.push_back(0);
   }
   // intial guess
-  if(true){
+  if(false){
     std::ifstream file("coeff_initial.txt");
     if (file.is_open()){
     for(int i=0;i<num_coeffs-1;++i){
@@ -143,8 +148,7 @@ int main(){
     }
   }
   else{
-    for(int i=1;i<num_coeffs-1;++i)
-      x[i] = 0.2/pow(i-3.5,2);
+    x[2]=1.26;
   }
   for (int k=0;k<MAX_ITER;k++){
     myfunc(x,grad);

@@ -95,7 +95,7 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  nlopt::opt opt(nlopt::LN_BOBYQA, Nx);
+  nlopt::opt opt(nlopt::LD_MMA, Nx);
   int cx[Nx];
   int xcount=0;
   for(int i=0;i<Nc-1;++i){                       
@@ -109,14 +109,8 @@ int main(){
   std::vector<double> lb(Nx);
   std::vector<double> ub(Nx);
   for (int i=0;i<Nx;++i){
-    if(i<3){
-      lb[i] = -2;
-      ub[i] = 2;
-    }
-    else{
-      lb[i] = -1;
-      ub[i] = 1;
-    }
+    lb[i] = -2;
+    ub[i] = 2;
   }
   opt.set_lower_bounds(lb);
   opt.set_upper_bounds(ub);
