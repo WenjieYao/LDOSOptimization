@@ -27,7 +27,7 @@ const unsigned int num_coeffs = 4*4+1;           // number of coefficients
 const unsigned int Nx =10;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
-double d_min = 20;                             // minimum distance in unit of nm
+double d_min = 50;                             // minimum distance in unit of nm
 const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 5000;
@@ -95,7 +95,7 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  nlopt::opt opt(nlopt::LD_MMA, Nx);
+  nlopt::opt opt(nlopt::LN_BOBYQA, Nx);
   int cx[Nx];
   int xcount=0;
   for(int i=0;i<Nc-1;++i){                       
@@ -109,8 +109,14 @@ int main(){
   std::vector<double> lb(Nx);
   std::vector<double> ub(Nx);
   for (int i=0;i<Nx;++i){
-    lb[i] = -2;
-    ub[i] = 2;
+    if(i<3){
+      lb[i] = -2;
+      ub[i] = 2;
+    }
+    else{
+      lb[i] = -1;
+      ub[i] = 1;
+    }
   }
   opt.set_lower_bounds(lb);
   opt.set_upper_bounds(ub);

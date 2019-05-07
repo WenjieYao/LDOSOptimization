@@ -28,6 +28,27 @@ void WriteCoeff(double *coeffs, const unsigned int num_coeffs){
   coeff_file.close();
 }
 
+bool isgood(double *anchor, double *vert1, double *vert2){
+  double v1[3];
+  double v2[3];
+  for(int i=0:i<3;++i){
+    v1[i] = vert1[i]-anchor[i];
+    v2[i] = vert2[i]-anchor[i];
+  }
+  double num = 0;
+  double n1 = 0;
+  double n2 = 0;
+  for(int i=0;i<3;++i){
+    num += v1[i]*v2[i];
+    n1 += v1[i]*v1[i];
+    n2 += v2[i]*v2[i];
+  }
+  if((num/sqrt(n1*n2))>0.9)
+    return false;
+  else
+    return true;
+  
+}
 bool CompareCoeff(double *coeffs, const unsigned int num_coeffs){
   std::ifstream file("coeff.txt");
   double *Excoeffs = new double[num_coeffs];
@@ -41,7 +62,7 @@ bool CompareCoeff(double *coeffs, const unsigned int num_coeffs){
   for(int i=0;i<num_coeffs;++i)
     diff += abs(Excoeffs[i]-coeffs[i]);
   bool rv = false;
-  if(diff>0.1)
+  if(diff>1)
     rv = true;
   delete[] Excoeffs;
   return rv;
@@ -157,7 +178,33 @@ void LDOS_gradient(double lambda_0, double *coeffs, const unsigned int num_coeff
         y[i] *= strech;
         z[i] *= strech;
     }
-    WriteMSH(x,y,z,v1,v2,v3);
+    bool quality = true;
+    for(int i=0;i<v1.size();++i){
+      int c1 = v1[i]-1;
+      int c2 = v2[i]-1;
+      int c3 = v3[i]-1;
+      double *pos1 = new double[3];
+      double *pos2 = new double[3];
+      double *pos3 = new double[3];
+      pos1[0] = x[c1]; pos1[1] = y[c1]; pos1[2] = z[c1];
+      pos2[0] = x[c2]; pos2[1] = y[c2]; pos2[2] = z[c2];
+      pos3[0] = x[c3]; pos3[1] = y[c3]; pos3[2] = z[c3];
+      quality *= isgood(pos1,pos2,pos3)*isgood(pos2,pos1,pos3)*isgood(pos3,pos1,pos2);
+      delete[] pos1,pos2,pos3;
+    }
+    if(quality)
+      WriteMSH(x,y,z,v1,v2,v3);
+    else{
+      WriteCoeff(coeffs,num_coeffs);
+      double el = 0;
+        for (int i=0;i<num_coeffs;++i)
+          el += abs(coeffs[i]);
+        el = el/100.0/resolution; //maximum edge length
+        std::string MeshCommand = "./SHMesher coeff.txt "
+            +std::to_string(num_coeffs)+" "+std::to_string(el)+" Ellipsoid.msh "
+            +std::to_string(min_mesh)+" "+std::to_string(max_mesh)+" "+std::to_string(0.02+d_min/1e3);
+        system(MeshCommand.c_str()); //create mesh
+    }
   }
 
   std::cout << "Mesh complete." << std::endl;

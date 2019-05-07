@@ -24,17 +24,17 @@ int fcount = 0;
 /***************************************************************/
 double lambda_0 = 500;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 4*4+1;           // number of coefficients
-const unsigned int Nx =10;
+const unsigned int Nx = 10;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
-double d_min = 20;                             // minimum distance in unit of nm
+double d_min = 50;                             // minimum distance in unit of nm
 const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
+bool eflag = true;
 
-
-double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data){
+double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   ofstream results_file;                          //write to file
   results_file.open ("results.txt",std::ios::app);
   ++fcount;
@@ -63,22 +63,29 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_
   LDOS_gradient(lambda_0, coeffs, num_coeffs, rho_s, dfdx, Chi,d_min ,min_mesh,max_mesh,resolution);
   if (!grad.empty()) {
     for (int i=0;i<Nx;++i)                        // gradient 
-        grad[i] = dfdx[cx[i]];
+        grad[i] = -dfdx[cx[i]];
   }
   /* print out temporary information *************************************/
+  if (eflag){
+    results_file << "Epsilon: " << real(Chi)+1 << " + " << imag(Chi) << "i\n";
+    eflag = false;
+  }
+
   results_file << rho_s << " ";
+  results_file << Nc << " ";
   std::cout << std::endl << "coeffs: ";
   //results_file << coeffs[0] << " ";
   for (int i=0;i<Nc;++i){
     std::cout << coeffs[i] << " ";
     results_file << coeffs[i] << " ";
   }
-  results_file << "\n";
   std::cout << endl;
   std::cout << "dfdx: ";
   for (int i=0;i<Nc-1;++i){
     std::cout << dfdx[i] << " ";
+    results_file << dfdx[i] << " ";
   }
+  results_file << "\n";
   std::cout << endl;
   std::cout << "rho: " << rho_s << std::endl << std::endl;
 
@@ -95,7 +102,6 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  nlopt::opt opt(nlopt::LN_BOBYQA, Nx);
   int cx[Nx];
   int xcount=0;
   for(int i=0;i<Nc-1;++i){                       
@@ -106,41 +112,54 @@ int main(){
       xcount++;
     }
   }
-  std::vector<double> lb(Nx);
-  std::vector<double> ub(Nx);
+  //adam parameters
+  double beta1 = 0.9;
+  double beta2 = 0.999;
+  double alpha = 0.01;
+  double epsilon = 1e-8;
+  //initial valuese
+  std::vector<double> x;
+  std::vector<double> m;
+  double v=0;
+  std::vector<double> grad;
+  std::vector<double> mc;
+  double vc;
+  
   for (int i=0;i<Nx;++i){
-    if(i<3){
-      lb[i] = -2;
-      ub[i] = 2;
+    x.push_back(0.1);
+    m.push_back(0);
+    grad.push_back(0);
+    mc.push_back(0);
+  }
+  // intial guess
+  if(false){
+    std::ifstream file("x_initial.txt");
+    if (file.is_open()){
+    for(int i=0;i<Nx;++i){
+      file >> x[i];
     }
-    else{
-      lb[i] = -1;
-      ub[i] = 1;
+    file.close();
     }
   }
-  opt.set_lower_bounds(lb);
-  opt.set_upper_bounds(ub);
-
-  opt.set_max_objective(myfunc, NULL);
-
-  opt.set_maxeval(MAX_ITER);
-  //opt.set_xtol_abs(1e-5);
-  //opt.set_xtol_rel(0);
-  //opt.get_maxeval();
-  //std::cout << "Start converting spheroid to spherical harmonics" << std::endl;
-  std::vector<double> x(Nx);
-  x[0]=1;
-  double maxf;
-  std::cout << "Starting optimization... " << std::endl;
-  nlopt::result result = opt.optimize(x, maxf);
-
-  std::cout << std::endl << "MAX_ITER: " << opt.get_maxeval() << std::endl;
-  std::cout << std::endl << "x: ";
-  for (int i=0;i<Nx;++i){
-    std::cout << x[i] << " ";
+  else{
+    x[0]=1;
   }
-  std::cout << endl;
-  std::cout << "rho: " << maxf << std::endl;
+  for (int k=0;k<MAX_ITER;k++){
+    myfunc(x,grad);
+    double g2=0;
+    for (int i=0;i<Nx;++i){
+      m[i] = beta1*m[i]+(1-beta1)*grad[i];
+      g2 += grad[i]*grad[i];
+      mc[i] = m[i]/(1-pow(beta1,k+1));
+    }
+    v = beta2*v+(1-beta2)*g2;
+    vc = v/(1-pow(beta2,k+1));
+    for (int i=0;i<Nx;++i){
+      x[i] = x[i] - alpha*mc[i]/(sqrt(vc)+epsilon);
+    }
+  }
+  
+  //std::cout << "rho: " << maxf << std::endl;
   double rho_limit = pow(k_0*d_min,-3)*abs(Chi*Chi)/imag(Chi)*(1+pow(k_0*d_min,2));
   std::cout << "d_min: " << d_min << std::endl;
   std::cout << "rho_limit: " << rho_limit << std::endl;
