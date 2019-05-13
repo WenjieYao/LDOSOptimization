@@ -31,7 +31,7 @@ void WriteCoeff(double *coeffs, const unsigned int num_coeffs){
 bool isgood(double *anchor, double *vert1, double *vert2){
   double v1[3];
   double v2[3];
-  for(int i=0:i<3;++i){
+  for(int i=0;i<3;++i){
     v1[i] = vert1[i]-anchor[i];
     v2[i] = vert2[i]-anchor[i];
   }
@@ -47,8 +47,8 @@ bool isgood(double *anchor, double *vert1, double *vert2){
     return false;
   else
     return true;
-  
 }
+
 bool CompareCoeff(double *coeffs, const unsigned int num_coeffs){
   std::ifstream file("coeff.txt");
   double *Excoeffs = new double[num_coeffs];

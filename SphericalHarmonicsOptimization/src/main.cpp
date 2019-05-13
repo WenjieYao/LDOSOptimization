@@ -34,7 +34,7 @@ int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
 bool eflag = true;
 
-double myfunc(const std::vector<double> &x, std::vector<double> &grad){
+double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data){
   ofstream results_file;                          //write to file
   results_file.open ("results.txt",std::ios::app);
   ++fcount;
@@ -63,7 +63,7 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   LDOS_gradient(lambda_0, coeffs, num_coeffs, rho_s, dfdx, Chi,d_min ,min_mesh,max_mesh,resolution);
   if (!grad.empty()) {
     for (int i=0;i<Nx;++i)                        // gradient 
-        grad[i] = -dfdx[cx[i]];
+        grad[i] = dfdx[cx[i]];
   }
   /* print out temporary information *************************************/
   if (eflag){
@@ -102,6 +102,7 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
+  nlopt::opt opt(nlopt::LD_MMA, Nx);
   int cx[Nx];
   int xcount=0;
   for(int i=0;i<Nc-1;++i){                       
@@ -112,54 +113,41 @@ int main(){
       xcount++;
     }
   }
-  //adam parameters
-  double beta1 = 0.9;
-  double beta2 = 0.999;
-  double alpha = 0.01;
-  double epsilon = 1e-8;
-  //initial valuese
-  std::vector<double> x;
-  std::vector<double> m;
-  double v=0;
-  std::vector<double> grad;
-  std::vector<double> mc;
-  double vc;
-  
+  std::vector<double> lb(Nx);
+  std::vector<double> ub(Nx);
   for (int i=0;i<Nx;++i){
-    x.push_back(0.1);
-    m.push_back(0);
-    grad.push_back(0);
-    mc.push_back(0);
-  }
-  // intial guess
-  if(false){
-    std::ifstream file("x_initial.txt");
-    if (file.is_open()){
-    for(int i=0;i<Nx;++i){
-      file >> x[i];
+    if(i<3){
+      lb[i] = -2;
+      ub[i] = 2;
     }
-    file.close();
+    else{
+      lb[i] = -1;
+      ub[i] = 1;
     }
   }
-  else{
-    x[0]=1;
+  opt.set_lower_bounds(lb);
+  opt.set_upper_bounds(ub);
+
+  opt.set_max_objective(myfunc, NULL);
+
+  opt.set_maxeval(MAX_ITER);
+  //opt.set_xtol_abs(1e-5);
+  //opt.set_xtol_rel(0);
+  //opt.get_maxeval();
+  //std::cout << "Start converting spheroid to spherical harmonics" << std::endl;
+  std::vector<double> x(Nx);
+  x[0]=1;
+  double maxf;
+  std::cout << "Starting optimization... " << std::endl;
+  nlopt::result result = opt.optimize(x, maxf);
+
+  std::cout << std::endl << "MAX_ITER: " << opt.get_maxeval() << std::endl;
+  std::cout << std::endl << "x: ";
+  for (int i=0;i<Nx;++i){
+    std::cout << x[i] << " ";
   }
-  for (int k=0;k<MAX_ITER;k++){
-    myfunc(x,grad);
-    double g2=0;
-    for (int i=0;i<Nx;++i){
-      m[i] = beta1*m[i]+(1-beta1)*grad[i];
-      g2 += grad[i]*grad[i];
-      mc[i] = m[i]/(1-pow(beta1,k+1));
-    }
-    v = beta2*v+(1-beta2)*g2;
-    vc = v/(1-pow(beta2,k+1));
-    for (int i=0;i<Nx;++i){
-      x[i] = x[i] - alpha*mc[i]/(sqrt(vc)+epsilon);
-    }
-  }
-  
-  //std::cout << "rho: " << maxf << std::endl;
+  std::cout << endl;
+  std::cout << "rho: " << maxf << std::endl;
   double rho_limit = pow(k_0*d_min,-3)*abs(Chi*Chi)/imag(Chi)*(1+pow(k_0*d_min,2));
   std::cout << "d_min: " << d_min << std::endl;
   std::cout << "rho_limit: " << rho_limit << std::endl;
