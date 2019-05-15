@@ -24,7 +24,7 @@ int fcount = 0;
 /***************************************************************/
 double lambda_0 = 500;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 4*4+1;           // number of coefficients
-const unsigned int Nx =10;
+const unsigned int Nx = 10;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 50;                             // minimum distance in unit of nm
@@ -32,7 +32,7 @@ const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
-
+bool eflag = true;
 
 double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_func_data){
   ofstream results_file;                          //write to file
@@ -66,19 +66,26 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad, void *my_
         grad[i] = dfdx[cx[i]];
   }
   /* print out temporary information *************************************/
+  if (eflag){
+    results_file << "Epsilon: " << real(Chi)+1 << " + " << imag(Chi) << "i\n";
+    eflag = false;
+  }
+
   results_file << rho_s << " ";
+  results_file << Nc << " ";
   std::cout << std::endl << "coeffs: ";
   //results_file << coeffs[0] << " ";
   for (int i=0;i<Nc;++i){
     std::cout << coeffs[i] << " ";
     results_file << coeffs[i] << " ";
   }
-  results_file << "\n";
   std::cout << endl;
   std::cout << "dfdx: ";
   for (int i=0;i<Nc-1;++i){
     std::cout << dfdx[i] << " ";
+    results_file << dfdx[i] << " ";
   }
+  results_file << "\n";
   std::cout << endl;
   std::cout << "rho: " << rho_s << std::endl << std::endl;
 
@@ -95,7 +102,7 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  nlopt::opt opt(nlopt::LN_BOBYQA, Nx);
+  nlopt::opt opt(nlopt::LD_MMA, Nx);
   int cx[Nx];
   int xcount=0;
   for(int i=0;i<Nc-1;++i){                       
