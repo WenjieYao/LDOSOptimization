@@ -22,7 +22,7 @@ int fcount = 0;
 /***************************************************************/
 /***************************************************************/
 /***************************************************************/
-double lambda_0 = 400;                          // wavelength in unit of nm
+double lambda_0 = 500;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 4*4+1;           // number of coefficients
 const unsigned int Nx =10;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
@@ -32,7 +32,7 @@ const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
-
+bool eflag = true;
 
 double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   ofstream results_file;                          //write to file
@@ -64,6 +64,11 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   if (!grad.empty()) {
     for (int i=0;i<Nx;++i)                        // gradient 
         grad[i] = -dfdx[cx[i]];
+  }
+  /* print out temporary information *************************************/
+  if (eflag){
+    results_file << "Epsilon: " << real(Chi)+1 << " + " << imag(Chi) << "i\n";
+    eflag = false;
   }
   /* print out temporary information *************************************/
   results_file << rho_s << " ";
@@ -110,7 +115,7 @@ int main(){
   //adam parameters
   double beta1 = 0.9;
   double beta2 = 0.999;
-  double alpha = 0.01;
+  double alpha = 0.1;
   double epsilon = 1e-8;
   //initial valuese
   std::vector<double> x;
@@ -121,13 +126,13 @@ int main(){
   double vc;
   
   for (int i=0;i<Nx;++i){
-    x.push_back(0.1);
+    x.push_back(0);
     m.push_back(0);
     grad.push_back(0);
     mc.push_back(0);
   }
   // intial guess
-  if(false){
+  if(true){
     std::ifstream file("x_initial.txt");
     if (file.is_open()){
     for(int i=0;i<Nx;++i){

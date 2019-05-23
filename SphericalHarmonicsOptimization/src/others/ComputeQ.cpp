@@ -22,9 +22,9 @@ int fcount = 0;
 /***************************************************************/
 /***************************************************************/
 /***************************************************************/
-double lambda_0 = 500;                          // wavelength in unit of nm
+//double lambda_0 = 400;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 4*4+1;           // number of coefficients
-const unsigned int Nx =10;
+const unsigned int Nx = 10;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 50;                             // minimum distance in unit of nm
@@ -32,9 +32,8 @@ const double d_min_c = d_min;
 int min_mesh = 4000;
 int max_mesh = 5000;
 double resolution = 10.0;                        // resolution, larger the finer, default 1
-bool eflag = true;
 
-double myfunc(const std::vector<double> &x, std::vector<double> &grad){
+double myfunc(double lambda_0, const std::vector<double> &x, std::vector<double> &grad){
   ofstream results_file;                          //write to file
   results_file.open ("results.txt",std::ios::app);
   ++fcount;
@@ -45,7 +44,7 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   for(int i=0;i<Nc-1;++i){                       
     int li=floor(sqrt(i));
     int mi=i-li*li-li;
-    if((0==0)&&((li%2)==1)){
+    if((0==0)&&((li%2)==0)){
       cx[xcount]=i;
       xcount++;
     }
@@ -63,15 +62,13 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   LDOS_gradient(lambda_0, coeffs, num_coeffs, rho_s, dfdx, Chi,d_min ,min_mesh,max_mesh,resolution);
   if (!grad.empty()) {
     for (int i=0;i<Nx;++i)                        // gradient 
-        grad[i] = -dfdx[cx[i]];
+        grad[i] = dfdx[cx[i]];
   }
   /* print out temporary information *************************************/
-  if (eflag){
-    results_file << "Epsilon: " << real(Chi)+1 << " + " << imag(Chi) << "i\n";
-    eflag = false;
-  }
-  /* print out temporary information *************************************/
+
   results_file << rho_s << " ";
+  results_file << lambda_0 << " ";
+  results_file << real(Chi)+1 << "+" << imag(Chi) << "i ";
   results_file << Nc << " ";
   std::cout << std::endl << "coeffs: ";
   //results_file << coeffs[0] << " ";
@@ -81,6 +78,7 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   }
   std::cout << endl;
   std::cout << "dfdx: ";
+  results_file << " dfdx: " ;
   for (int i=0;i<Nc-1;++i){
     std::cout << dfdx[i] << " ";
     results_file << dfdx[i] << " ";
@@ -102,34 +100,11 @@ int main(){
   results_file << "#1 rho_s \n";
   results_file << "#2 coeffs \n";
   results_file.close();
-  int cx[Nx];
-  int xcount=0;
-  for(int i=0;i<Nc-1;++i){                       
-    int li=floor(sqrt(i));
-    int mi=i-li*li-li;
-    if((0==0)&&((li%2)==1)){
-      cx[xcount]=i;
-      xcount++;
-    }
-  }
-  //adam parameters
-  double beta1 = 0.9;
-  double beta2 = 0.999;
-  double alpha = 0.1;
-  double epsilon = 1e-8;
-  //initial valuese
   std::vector<double> x;
-  std::vector<double> m;
-  double v=0;
   std::vector<double> grad;
-  std::vector<double> mc;
-  double vc;
-  
   for (int i=0;i<Nx;++i){
     x.push_back(0);
-    m.push_back(0);
     grad.push_back(0);
-    mc.push_back(0);
   }
   // intial guess
   if(true){
@@ -141,26 +116,9 @@ int main(){
     file.close();
     }
   }
-  else{
-    x[1]=1;
+  double lambda = 380;
+  for(int i=0;i<20;++i){
+    myfunc(lambda,x0,grad0)
+    lambda += 2;
   }
-  for (int k=0;k<MAX_ITER;k++){
-    myfunc(x,grad);
-    double g2=0;
-    for (int i=0;i<Nx;++i){
-      m[i] = beta1*m[i]+(1-beta1)*grad[i];
-      g2 += grad[i]*grad[i];
-      mc[i] = m[i]/(1-pow(beta1,k+1));
-    }
-    v = beta2*v+(1-beta2)*g2;
-    vc = v/(1-pow(beta2,k+1));
-    for (int i=0;i<Nx;++i){
-      x[i] = x[i] - alpha*mc[i]/(sqrt(vc)+epsilon);
-    }
-  }
-  
-  //std::cout << "rho: " << maxf << std::endl;
-  double rho_limit = pow(k_0*d_min,-3)*abs(Chi*Chi)/imag(Chi)*(1+pow(k_0*d_min,2));
-  std::cout << "d_min: " << d_min << std::endl;
-  std::cout << "rho_limit: " << rho_limit << std::endl;
 }
