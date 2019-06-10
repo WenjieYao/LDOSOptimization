@@ -25,7 +25,7 @@ int fcount = 0;
 //double lambda_0 = 400;                          // wavelength in unit of nm
 const unsigned int num_coeffs = 4*4+1;           // number of coefficients
 const unsigned int Nx = 10;
-double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
+//double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 50;                             // minimum distance in unit of nm
 const double d_min_c = d_min;
@@ -44,7 +44,7 @@ double myfunc(double lambda_0, const std::vector<double> &x, std::vector<double>
   for(int i=0;i<Nc-1;++i){                       
     int li=floor(sqrt(i));
     int mi=i-li*li-li;
-    if((0==0)&&((li%2)==0)){
+    if((0==0)&&((li%2)==1)){
       cx[xcount]=i;
       xcount++;
     }
@@ -97,8 +97,6 @@ double myfunc(double lambda_0, const std::vector<double> &x, std::vector<double>
 int main(){
   ofstream results_file;                          //write to file
   results_file.open ("results.txt");
-  results_file << "#1 rho_s \n";
-  results_file << "#2 coeffs \n";
   results_file.close();
   std::vector<double> x;
   std::vector<double> grad;
@@ -116,9 +114,10 @@ int main(){
     file.close();
     }
   }
-  double lambda = 380;
-  for(int i=0;i<20;++i){
-    myfunc(lambda,x0,grad0)
-    lambda += 2;
+  double lambda = 440;
+  for(int i=0;i<40;++i){
+    myfunc(lambda,x,grad);
+    lambda += 4;
   }
+  return 0;
 }

@@ -13,7 +13,7 @@
 #define pi 3.1415926535897  
 #define Z_0 376.730313                          // Free space impedance, unit : Ohms
 #define MAX_ITER1 20                             // maximum number for number of coeff sets
-#define MAX_ITER2 20                             // maximum number for number of coeff sets
+#define MAX_ITER2 1                             // maximum number for number of coeff sets
 #define MAX_ITER MAX_ITER1*MAX_ITER2                             // maximum number for number of coeff sets
 #define Nc 2
 /***************************************************************/
@@ -21,14 +21,14 @@
 /***************************************************************/
 int main()
 {
-  double lambda_0 = 550;                        // wavelength in unit of nm
+  double lambda_0 = 500;                        // wavelength in unit of nm
   double k_0 = 2*pi/lambda_0;                   // wavenumber in unit of 1/nm
   cdouble Chi = 0;                              // chi = epsilon-1
-  double d_min = 100;                           // minimum distance in unit of nm
+  double d_min = 50;                           // minimum distance in unit of nm
   
   int min_mesh = 1000;
   int max_mesh = 5000;
-  double r1 = 190.0/1e3;
+  double r1 = 140.0/1e3;
   double r2 = d_min/1000;
   double delta_c = 1.0/1e3;                     // increasement of coefficients used
 
@@ -43,8 +43,8 @@ int main()
 
   for(int k1=0;k1<MAX_ITER1;++k1){
     for(int k2=0;k2<MAX_ITER2;++k2){
-      R1[k1][k2] = r1+(k1-MAX_ITER1/2)*delta_c;
-      R2[k1][k2] = r2+(k2-MAX_ITER2/2)*delta_c;
+      R1[k1][k2] = r1+(k1)*delta_c;
+      R2[k1][k2] = r2+(k2)*delta_c;
     }
   }
   double rho_s;                                 // electric LDOS at center computed with 3 scatter simulation

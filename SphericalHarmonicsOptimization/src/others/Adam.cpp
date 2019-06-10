@@ -115,7 +115,7 @@ int main(){
   //adam parameters
   double beta1 = 0.9;
   double beta2 = 0.999;
-  double alpha = 0.1;
+  double alpha = 0.01;
   double epsilon = 1e-8;
   //initial valuese
   std::vector<double> x;

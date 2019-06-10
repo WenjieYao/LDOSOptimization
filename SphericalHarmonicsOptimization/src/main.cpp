@@ -23,8 +23,8 @@ int fcount = 0;
 /***************************************************************/
 /***************************************************************/
 double lambda_0 = 500;                          // wavelength in unit of nm
-const unsigned int num_coeffs = 4*4+1;           // number of coefficients
-const unsigned int Nx =10;
+const unsigned int num_coeffs = 5*5+1;           // number of coefficients
+const unsigned int Nx =25;
 double k_0 = 2*pi/lambda_0;                     // wavenumber in unit of 1/nm
 cdouble Chi = 0;                                // chi = epsilon-1
 double d_min = 50;                             // minimum distance in unit of nm
@@ -45,7 +45,7 @@ double myfunc(const std::vector<double> &x, std::vector<double> &grad){
   for(int i=0;i<Nc-1;++i){                       
     int li=floor(sqrt(i));
     int mi=i-li*li-li;
-    if((0==0)&&((li%2)==1)){
+    if((0==0)&&((li%1)==0)){
       cx[xcount]=i;
       xcount++;
     }
@@ -126,13 +126,13 @@ int main(){
   double vc;
   
   for (int i=0;i<Nx;++i){
-    x.push_back(0);
+    x.push_back(0.01);
     m.push_back(0);
     grad.push_back(0);
     mc.push_back(0);
   }
   // intial guess
-  if(true){
+  if(false){
     std::ifstream file("x_initial.txt");
     if (file.is_open()){
     for(int i=0;i<Nx;++i){
@@ -142,7 +142,7 @@ int main(){
     }
   }
   else{
-    x[1]=1;
+    x[1]=0.5;
   }
   for (int k=0;k<MAX_ITER;k++){
     myfunc(x,grad);
